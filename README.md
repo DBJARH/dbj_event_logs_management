@@ -5,6 +5,8 @@
 > **SHORT ON PATIENCE**: clone it then double click on Reset-EventLogs.bat <br/><br/>
 > YES must be in all capitals (for your own good)
 >
+> **DOWNLOAD AND USE**: grab `dbj_event_logs_management.zip`, extract, double click Reset-EventLogs.bat
+>
 > &nbsp;
 > 
 
