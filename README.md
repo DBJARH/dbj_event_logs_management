@@ -105,4 +105,7 @@ is the constraint this script is built around.
 
 ---
 
-Benevolent Dictator, Human Supervisor and Deep Inspirator: &copy; 2026 by dbj@dbj.org | MIT — see [LICENSE](LICENSE)
+Author  : DBJ (dbj@dbj.org)
+Viber   : ASH (Claude Code Harness)
+
+DBJ is Benevolent Dictator, Supervisor of Humans and Deep Inspirator | &copy; 2026 by dbj@dbj.org | MIT — see [LICENSE](LICENSE)

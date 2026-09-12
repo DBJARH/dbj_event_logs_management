@@ -3,8 +3,8 @@
   Reset-EventLogs.ps1
 ================================================================================
 
-  Author  : ASH (Claude Code Harness)
-  For     : dbjdbj
+  Author  : DBJ (dbj@dbj.org) 
+  Viber   : ASH (Claude Code Harness)
   Machine : single-owner workstation (MYMACHINE)
   Licence : MIT -- see LICENSE beside this file.
   Operator assumptions: see README.md ("User behavioural assumptions"). They
@@ -240,6 +240,28 @@ param(
 
 $ScriptVersion = '1.4.0'
 
+# --- DBJ_CLINTRO banner (first thing on screen, no side effects) -------------
+function Show-DbjClIntro {
+    param([string]$AppName, [string]$Version)
+    $glyphs = @(
+        @('##### ','##  ##','##  ##','##  ##','##  ##','##  ##','##### '),  # D
+        @('##### ','##  ##','##  ##','##### ','##  ##','##  ##','##### '),  # B
+        @('   ###','    ##','    ##','    ##','##  ##','##  ##',' #### ')   # J
+    )
+    for ($row = 0; $row -lt 7; $row++) {
+        Write-Host (($glyphs | ForEach-Object { $_[$row] }) -join '  ') -ForegroundColor Cyan
+    }
+    Write-Host ""
+    Write-Host "(c) dbj@dbj.org | MIT License"
+    Write-Host "$AppName  version $Version"
+    Write-Host ("OS: {0}   run: {1}" -f [System.Environment]::OSVersion.VersionString, (Get-Date))
+    Write-Host "-------------------------------------------------------------------------------"
+    Write-Host ""
+}
+Write-Host ""
+Write-Host ""
+Show-DbjClIntro -AppName 'Reset-EventLogs.ps1' -Version $ScriptVersion
+
 # --- Informational flags exit before ANYTHING else (philosophy #10) ----------
 # Deliberately above the elevation check: asking a script what it does must
 # never trigger a UAC prompt. --help is a question, not an operation.
@@ -381,6 +403,7 @@ if ($DryRun) {
     Write-Host "This is IRREVERSIBLE. (The clear itself is logged: ID 1102/1104.)" -ForegroundColor Red
 }
 Write-Host ""
+Write-Host "Ctrl+C to cancel; anything but YES aborts." -ForegroundColor DarkGray
 
 # -BackupOnly destroys nothing, so it does not need the destructive-action gate.
 if (-not $Force -and -not $DryRun -and -not $BackupOnly) {
