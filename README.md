@@ -1,12 +1,22 @@
+
+>
+> &nbsp;
+> 
+> **SHORT ON PATIENCE**: clone it then double click on Reset-EventLogs.bat <br/><br/>
+> YES must be in all capitals (for your own good)
+>
+> &nbsp;
+> 
+
 # dbj_event_logs_management
 
-`Reset-EventLogs.ps1` 
+`Reset-EventLogs.ps1`  **concept**:
 
 1. back up
 2. resize and 
 3. clear 
 
-Every Windows event log [channel](#vocabulary) on a machine, in that order.
+**Every** Windows event log [channel](#vocabulary) on a machine, in that order.
 
 ```mermaid
 flowchart LR
@@ -24,13 +34,21 @@ flowchart LR
     class NA,NB,NC note;
 ```
 
-Windows has no supported way to delete events specified by date. The only
-removal primitive the OS offers is clear-the-whole-channel. This script does not
-pretend otherwise: it takes a snapshot first, then wipes.
+Windows has no supported way to delete events specified by date. The only removal primitive the OS offers is clear-the-whole-channel. This script does not pretend that is possible, so: **take a snapshot first, then wipe**.
 
 ---
 
 ## Quick start
+
+>
+> &nbsp;
+> 
+> Double click on Reset-EventLogs.bat <br/><br/>
+> YES must be in all capitals (for your own good)
+>
+> &nbsp;
+
+If you are PS aficionado you can play with:
 
 ```powershell
 .\Reset-EventLogs.ps1 --help        # what it does
@@ -39,14 +57,11 @@ pretend otherwise: it takes a snapshot first, then wipes.
 .\Reset-EventLogs.ps1               # the real thing (asks for YES)
 ```
 
-### Why there are two files
+### Why the two scripts
 
-Windows does not run a `.ps1` when you double-click it — it opens in an editor
-instead. That is deliberate: a downloaded script should not execute on a stray
-double-click. A `.bat` *does* run on double-click, so `Reset-EventLogs.bat`
-exists to give you one.
+Windows does not run a `.ps1` when you double-click it; it opens in an editor instead. That is deliberate: a downloaded script should not execute on an accidental double-click. A `.bat` *does* run on double-click, so `Reset-EventLogs.bat` exists to give you one.
 
-It is a single line, and holds no logic of its own:
+bat boils dow to a single line:
 
 ```bat
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Reset-EventLogs.ps1" %*
@@ -59,17 +74,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Reset-EventLogs.ps1" %
 | `%~dp0` | "The folder this `.bat` sits in" — it finds its `.ps1` whatever the current directory is |
 | `%*` | Forwards every argument through |
 
-Because of `%*`, the `.bat` is a full stand-in for the `.ps1`, not merely a
-double-click shim:
+Because of `%*`, the `.bat` is a full stand-in for the `.ps1`, not merely a double-click shim, Examples:
 
 ```bat
 Reset-EventLogs.bat --help
 Reset-EventLogs.bat -DryRun
 ```
 
-Use the `.bat` from Explorer, `cmd`, or Task Scheduler; call the `.ps1`
-directly when you are already at a PowerShell prompt. Behaviour is identical —
-all logic, the UAC elevation, and the `YES` gate live in the `.ps1`.
+Use the `.bat` from Explorer, `cmd`, or Task Scheduler; call the `.ps1` directly when you are already at a PowerShell prompt. Behaviour is identical — all logic, the UAC elevation, and the `YES` gate live in the `.ps1`.
 
 | Flag | Effect |
 |---|---|
@@ -91,17 +103,9 @@ Event Viewer UI → Action → Open Saved Log.
 
 **Channel** — in this context a named log stream that Windows writes events into. Each channel is its own container with its own file, size cap, and access rules.
 
-The familiar ones appear in Event Viewer as Application, System, Security,
-Setup, and Forwarded Events — the classic five. Behind them sits a much larger
-set: the per-component channels named like
-`Microsoft-Windows-PowerShell/Operational` or
-`Microsoft-Windows-Kernel-Boot/Operational`, one or more per Windows component.
-That is why the counts above are what they are — `wevtutil el` enumerates 1217
-channels on `MYMACHINE`, and each is backed up, resized, and cleared in turn.
+The familiar ones appear in Event Viewer as Application, System, Security, Setup, and Forwarded Events — the classic five. Behind them sits a much larger set: the per-component channels named like `Microsoft-Windows-PowerShell/Operational` or `Microsoft-Windows-Kernel-Boot/Operational`, one or more per Windows component. That is why the counts above are what they are — `wevtutil el` enumerates 1217 channels on `MYMACHINE`, and each is backed up, resized, and cleared in turn.
 
-The word matters because the channel is the unit the OS actually operates on.
-You can clear a channel; you cannot delete individual events inside one. That
-is the constraint this script is built around.
+The word matters because the channel is the unit the OS actually operates on. You can clear a channel; you cannot delete individual events inside one. That is the constraint this script is built around.
 
 ---
 
